@@ -139,12 +139,12 @@ impl<T, const N: usize> Drop for PartiallyInitArray<T, N> {
 #[macro_export]
 macro_rules! pattern_list {
     ($ph:pat, $($pt:pat,)*) => {
-        $crate::pattern_list!($($pt,)* | $ph )
+        $crate::pattern_list!($($pt,)* ; $ph )
     };
-    ($ph:pat, $($pt:pat,)* | $r:pat) => {
-        $crate::pattern_list!($($pt,)* | ($r, $ph) )
+    ($ph:pat, $($pt:pat,)* ; $r:pat) => {
+        $crate::pattern_list!($($pt,)* ; ($r, $ph) )
     };
-    (| $r:pat) => {
+    (; $r:pat) => {
         $r
     };
 }
