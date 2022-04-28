@@ -16,15 +16,16 @@ Use simple syntax, make it more complex as requirements change.
 # Examples
 
 ```
-# use array_fu::array;
-# use rand::random;
+use array_fu::array;
+use rand::random;
+
 let values: [f32; 2] = array![random(); 2];
 ```
 
 This also means that expression type may not be `Copy` or event `Clone`.
 
 ```
-# use array_fu::array;
+use array_fu::array;
 # use std::sync::Mutex;
 let values = array![Mutex::new(1); 2];
 ```
@@ -37,14 +38,16 @@ See more examples in the [`array!`] macro documentation.
 # Examples
 
 ```
-# use array_fu::collect_array;
+use array_fu::collect_array;
+
 let opt = collect_array![x in 1.., y in 2.. => x + y; where x * y > 10; 3];
 
 assert_eq!(opt, Some([7, 9, 11]));
 ```
 
 ```
-# use array_fu::collect_array;
+use array_fu::collect_array;
+
 let values = collect_array![(x, y) in [(1, 2), (3, 4), (5, 6)] => x + y; 3];
 
 assert_eq!(values, Some([3, 7, 11]));
