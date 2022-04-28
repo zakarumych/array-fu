@@ -20,7 +20,7 @@
 //! let values = array![Mutex::new(1); 2];
 //! ```
 //!
-//! See more examples in the [`array`] macro documentation.
+//! See more examples in the [`array!`] macro documentation.
 //!
 //! `collect_array!` macro constructs arrays by repeating expression execution with elements from iterators bound to provided patterns.
 //!
@@ -40,7 +40,7 @@
 //! assert_eq!(values, Some([3, 7, 11]));
 //! ```
 //!
-//! See more examples in the [`collect_array`] macro documentation.
+//! See more examples in the [`collect_array!`] macro documentation.
 //!
 //!
 //!
