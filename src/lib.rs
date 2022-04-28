@@ -42,8 +42,6 @@
 //!
 //! See more examples in the [`collect_array!`] macro documentation.
 //!
-//!
-//!
 #![no_std]
 
 use core::{
@@ -54,6 +52,7 @@ use core::{
 #[doc(hidden)]
 pub type Usize = usize;
 
+#[doc(hidden)]
 pub use core::{iter::IntoIterator, num::Wrapping, ops::Not};
 
 #[doc(hidden)]
@@ -213,13 +212,13 @@ macro_rules! pattern_list {
 /// ```
 ///
 /// It is possible to make array expression infeasible.
-/// For example by providing predicated that never returns true.
+/// For example by providing predicate that never evaluates to true.
 ///
 /// ```should_panic
 /// # use array_fu::array;
 ///
 /// // predicate always evaluates to `false`
-/// // making it impossible to construct array of size 1.
+/// // making it impossible to construct array of size 1 or greater.
 /// // This will lead to a panic with descriptive message.
 /// // `[u8; 1]` type forces enumerator to be `u8` allowing it to fail faster.
 /// let _: [u8; 1] = array![x => x; where false; 1];
@@ -231,7 +230,7 @@ macro_rules! pattern_list {
 /// This makes it possible to perform early return from macro invocation using `return` and `break` and `continue` statements.
 /// `continue` and `break` won't compile without a label. If label is provided, they will behave as expected.
 /// `return` would exit function where macro is called.
-/// If size of the array is `0`, element expression won't be executed even once
+/// If size of the array is `0`, element and condition expressions won't be executed even once
 /// and `return` statement won't exit the function.
 /// This behavior is different from `[return; 0]` which performs early return regardless.
 ///
@@ -259,6 +258,8 @@ macro_rules! pattern_list {
 /// # use array_fu::array;
 /// 'a: for _ in 0..3 { array![continue 'a; 1]; };
 /// ```
+///
+/// ## List
 ///
 /// For consistency with built-in syntax, arrays may be constructed with a list of expressions.
 ///
@@ -370,7 +371,8 @@ macro_rules! array {
 /// assert_eq!(opt, None, "There's only two elements in 1..3");
 /// ```
 ///
-/// Similarly to `array!` macro, `collect_array` can be given with pattern and element expression.
+/// Similarly to `array!` macro, `collect_array` can be given a pattern to bind iterator elements
+/// and expression to produce array elements.
 ///
 /// ```
 /// # use array_fu::collect_array;
@@ -389,7 +391,7 @@ macro_rules! array {
 /// ```
 ///
 /// Surely it also supports predicates.
-/// When predicate returns `false`, next items are taken from all iterators.
+/// When predicate evaluates to `false`, next items are taken from all iterators.
 ///
 /// ```
 /// # use array_fu::collect_array;
@@ -398,7 +400,7 @@ macro_rules! array {
 /// assert_eq!(opt, Some([7, 9, 11]));
 /// ```
 ///
-/// Patterns are typical Rust patterns, so they support destructuring.
+/// Patterns support destructuring.
 ///
 /// ```
 /// # use array_fu::collect_array;
@@ -407,7 +409,7 @@ macro_rules! array {
 /// assert_eq!(values, Some([3, 7, 11]));
 /// ```
 ///
-/// And patterns don't even have to be irrefutable :shock:
+/// And patterns don't have to be irrefutable.
 ///
 /// ```
 /// # use array_fu::collect_array;
