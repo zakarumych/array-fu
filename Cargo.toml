@@ -1,0 +1,17 @@
+[package]
+name = "array-fu"
+version = "0.0.0"
+edition = "2018"
+authors = ["Zakarum <zakarumych@ya.ru>"]
+license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/array-fu"
+homepage = "https://github.com/zakarumych/array-fu"
+repository = "https://github.com/zakarumych/array-fu"
+readme = "README.md"
+description = "Construct arrays using simple syntax"
+keywords = ["array", "no-std", "zero-overhead"]
+categories = ["no-std", "rust-patterns"]
+
+
+[dev-dependencies]
+rand = "0.8"
