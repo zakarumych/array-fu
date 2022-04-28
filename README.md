@@ -7,122 +7,54 @@
 ![loc](https://img.shields.io/tokei/lines/github/zakarumych/array-fu?style=for-the-badge)
 
 
-`array-fu` crate defines `array` macro that can create arrays.
+
+This crate defines [`array!`] and other macros that can construct arrays.
 Use simple syntax, make it more complex as requirements change.
 
-# Syntax
+[`array!`] macro constructs arrays by repeating expression execution, possibly with enumeration bound to provided pattern.
 
-On the basic level, arrays construction happens by repeating provided expression multiple times.
+# Examples
 
-```rust
-# use array_fu::array;
-let values = array!(1; 2);
-
-assert_eq!(values, [1, 1]);
 ```
-
-Unlike built-in syntax `[$expr; $size]` `array!` runs expression `$size` times instead of copying result.
-This means that expression will exhibit its side effects for each array element,
-and value can change freely.
-
-```rust
 # use array_fu::array;
 # use rand::random;
-let values: [f32; 2] = array!(random(); 2);
+let values: [f32; 2] = array![random(); 2];
 ```
 
 This also means that expression type may not be `Copy` or event `Clone`.
 
-```rust
+```
 # use array_fu::array;
 # use std::sync::Mutex;
-let values = array!(Mutex::new(1); 2);
+let values = array![Mutex::new(1); 2];
 ```
 
-## Enumerate
- 
-`array!` macro supports enumerating while constructing array elements.
+See more examples in the [`array!`] macro documentation.
 
-`array!($pat => $expr ; $n)` does the trick. That's it, simply add `$pat =>` before element expression.
 
-`$pat` must be valid pattern. And it will be bound to numbers starting from 0.
-Bound value can be used in the element expression.
+[`collect_array!`] macro constructs arrays by repeating expression execution with elements from iterators bound to provided patterns.
 
-```rust
-# use array_fu::array;
-let values = array!(x => x + 1; 3);
+# Examples
 
-assert_eq!(values, [1, 2, 3]);
 ```
-
-## Predicates
-
-`array!` macro supports predicated that are evaluated before element expression for each constructed element.
-When predicate does not pass, element expression is not executed.
-Value bound to pattern will be updated before trying again.
-
-```rust
-# use array_fu::array;
-let values = array!(x => x + 1; where x & 1 == 1; 3);
-
-assert_eq!(values, [2, 4, 6]);
-```
-
-# Iterators
-
-Creating arrays from iterators is really handy.
-But it comes at price - there could be not enough values in the iterator to fill the array.
-
-This crate provides `try_array!` macro that is unlike to `array!` returns `Option`.
-`Some` array is returned if there were enough values.
-
-```rust
-# use array_fu::try_array;
-let opt = try_array!(x in 1.. => x / 2; 3);
-
-assert_eq!(opt, Some([0, 1, 1]));
-```
-`None` is returned otherwise.
-
-```rust
-# use array_fu::try_array;
-let opt = try_array!(x in 1..3 => x / 2; 3);
-
-assert_eq!(opt, None);
-```
-
-This macro also supports zipping multiple iterators.
-
-```rust
-# use array_fu::try_array;
-let opt = try_array!(x in 1.., y in 2.. => x + y; 3);
-
-assert_eq!(opt, Some([3, 5, 7]));
-```
-
-Surely it also supports predicates.
-When predicate returns `false`, next items are taken from iterators.
-
-```rust
-# use array_fu::try_array;
-let opt = try_array!(x in 1.., y in 2.. => x + y; where x * y > 10; 3);
+# use array_fu::collect_array;
+let opt = collect_array![x in 1.., y in 2.. => x + y; where x * y > 10; 3];
 
 assert_eq!(opt, Some([7, 9, 11]));
 ```
 
-Patterns are typical Rust patterns, so they support destructuring.
-
-```rust
-# use array_fu::try_array;
-let values = try_array!((x, y) in [(1, 2), (3, 4), (5, 6)] => x + y; 3);
+```
+# use array_fu::collect_array;
+let values = collect_array![(x, y) in [(1, 2), (3, 4), (5, 6)] => x + y; 3];
 
 assert_eq!(values, Some([3, 7, 11]));
 ```
 
+See more examples in the [`collect_array!`] macro documentation.
 
-Stay tuned, more macros are coming.
 
-
+[`array!`]: https://docs.rs/array-fu/latest/array_fu/macro.array.html
+[`collect_array!`]: https://docs.rs/array-fu/latest/array_fu/macro.collect_array.html
 
 ## License
 

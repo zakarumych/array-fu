@@ -1,8 +1,8 @@
 //!
-//! `array-fu` crate defines `array` macro that can create arrays.
+//! This crate defines [`array!`] and other macros that can construct arrays.
 //! Use simple syntax, make it more complex as requirements change.
 //!
-//! `array!` macro constructs arrays by repeating expression execution, possibly with enumeration bound to provided pattern.
+//! [`array!`] macro constructs arrays by repeating expression execution, possibly with enumeration bound to provided pattern.
 //!
 //! # Examples
 //!
@@ -22,7 +22,8 @@
 //!
 //! See more examples in the [`array!`] macro documentation.
 //!
-//! `collect_array!` macro constructs arrays by repeating expression execution with elements from iterators bound to provided patterns.
+//!
+//! [`collect_array!`] macro constructs arrays by repeating expression execution with elements from iterators bound to provided patterns.
 //!
 //! # Examples
 //!
